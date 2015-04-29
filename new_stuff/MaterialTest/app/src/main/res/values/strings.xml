@@ -27,6 +27,8 @@
     <string name="name">Full Name</string>
     <string name="logout">Logout</string>
     <string name="message_elipses">Message...</string>
+    <string name="menu_option_complete_transaction">Complete Transaction</string>
+    <string name="menu_option_cancel_transaction">Cancel Transaction</string>
 
     <string name="search_movies">Search Movies</string>
 
@@ -63,7 +65,7 @@
         <item>Bad</item>
     </string-array>
 
-
     <string name="title_activity_confirm_sell">ConfirmSellActivity</string>
+    <string name="title_activity_ratings">Rate User</string>
 
 </resources>

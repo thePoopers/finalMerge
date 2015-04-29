@@ -82,6 +82,18 @@
                 android:value="materialtest.theartistandtheengineer.co.materialtest.activities.SellActivity" />
         </activity>
 
+        <service android:name=".helper.MessageService" />
+
+        <activity
+            android:name=".MessagingActivity"
+            android:label="Chat"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activities.RatingsActivity"
+            android:label="@string/title_activity_ratings" >
+        </activity>
+
         <service android:name="com.parse.PushService" />
 
         <receiver android:name="com.parse.ParseBroadcastReceiver" >
