@@ -18,7 +18,12 @@
         android:layout_above="@+id/divider"
         android:padding="0dip"
         android:divider="@null"
-        android:dividerHeight="0dp" android:stackFromBottom="true" tools:listitem="@layout/message_left"/>
+        android:dividerHeight="0dp" android:stackFromBottom="true" tools:listitem="@layout/message_left"
+        tools:context="materialtest.theartistandtheengineer.co.materialtest.MessagingActivity"/>
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
 
     <RelativeLayout
         android:id="@+id/divider"
