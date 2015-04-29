@@ -127,7 +127,7 @@ public class SingleBookActivity extends ActionBarActivity implements View.OnClic
 
         //addListenerOnSpinnerItemSelection();
 
-        spinner = (Spinner) findViewById(R.id.spinner);
+        //spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 
         tv_bookTitle = (TextView) findViewById(R.id.bookTitle);

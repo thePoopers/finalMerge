@@ -1,5 +1,6 @@
 package materialtest.theartistandtheengineer.co.materialtest.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,9 +13,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
+import com.android.volley.Request.Method;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,12 +26,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import materialtest.theartistandtheengineer.co.materialtest.R;
 import materialtest.theartistandtheengineer.co.materialtest.activities.BuyActivity;
@@ -52,6 +59,9 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM2 = "param2";
 
     public static final String URL_BOOK = "https://www.googleapis.com/books/v1/volumes";
+
+    public static final String URL_UBOOKS = "http://theartistandtheengineer.co/ubooks/";
+
     public static final String URL_BOOK_SEARCH = "q=";
     private static String URL_BOOK_CONTENTS = "";
     public static final String URL_BOOK_START_INDEX = "startIndex=";
@@ -61,6 +71,11 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
     public static final String URL_CHAR_AMPERSAND = "&";
     private static final String STATE_BOOKS = "state_books";
 
+
+
+    private Spinner spinner1;
+    private Spinner spinner2;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -68,6 +83,7 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
     private ImageLoader imageLoader;
     private RequestQueue requestQueue;
     private VolleySingleton volleySingleton;
+    private ProgressDialog pDialog;
     private ArrayList<Book> listBooks = new ArrayList<>();
     private RecyclerView listSearchedBooks;
     private AdapterBuy adapterBuy;
@@ -107,6 +123,12 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
                 + AppController.API_KEY_GOOGLE_BOOKS;
     }
 
+    public static String getRequestUrl(String author) {
+        return URL_UBOOKS + "?author="+author;
+    }
+
+
+
     public FragmentBuy() {
         // Required empty public constructor
     }
@@ -129,7 +151,13 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_search_buy, container, false);
+        View view = inflater.inflate(R.layout.fragment_fragment_buy, container, false);
+
+        spinner1 = (Spinner) view.findViewById(R.id.spinner1);
+        spinner2 = (Spinner) view.findViewById(R.id.spinner2);
+
+        spinner1.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+        spinner2.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 
         search_book = (EditText) view.findViewById(R.id.search_book);
         button_search = (Button) view.findViewById(R.id.button_search);
@@ -167,26 +195,91 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
         return view;
     }
 
-    private void sendJsonRequest() {
+    private void sendJsonRequest(final String author) {
+        StringRequest strReq = new StringRequest(Method.POST,
+                URL_UBOOKS, new Response.Listener<String>() {
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
-                getRequestUrl(0, 20),
-                (String) null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        listBooks = parseJSONResponse(response);
-                        adapterBuy.setBookList(listBooks);
-                    }
-                }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onResponse(String response) {
+                //Log.d(TAG, "Register Response: " + response.toString());
+
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+                    if (!error) {
+
+                        JSONArray returnData = jObj.getJSONArray("data");
+                        for ( int i = 0 ; i < returnData.length(); i++ ){
+                            String author = returnData.getJSONObject(i).getString("author");
+                            String title = returnData.getJSONObject(i).getString("title");
+                            String image_url = returnData.getJSONObject(i).getString("image_url");
+                            String bcondition = returnData.getJSONObject(i).getString("bcondition");
+                            String price = returnData.getJSONObject(i).getString("price");
+                            String isbn = returnData.getJSONObject(i).getString("isbn");
+                            String transaction_status = returnData.getJSONObject(i).getString("transaction_status");
+                            String seller_id = returnData.getJSONObject(i).getString("seller_id");
+                            int tid = (int)returnData.getJSONObject(i).getInt("tid");
+
+                            Book book = new Book();
+                            book.setAuthors(author);
+                            book.setImageLinks(image_url);
+                            book.setTitle(title);
+                            book.setCondition(bcondition);
+                            book.setISBN_13(bcondition);
+                            book.setPrice(price);
+                            book.setTransactionStatus(transaction_status);
+                            book.seturlThumbnail(image_url);
+                            book.setSellerId(seller_id);
+                            book.setTid(tid);
+
+                            listBooks.add(book);
+
+                        }
+
+                    } else {
+
+                        // Error occurred in registration. Get the error
+                        // message
+                        String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(getActivity(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
-        });
+        }, new Response.ErrorListener() {
 
-        requestQueue.add(request);
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Log.e(TAG, "Registration Error: " + error.getMessage());
+                Toast.makeText(getActivity(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+                //hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("tag", "buysearch");
+                params.put("author", author);
+                //params.put("bcondition", bcondition);
+
+                return params;
+            }
+
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, "response");
     }
+
+
+
 
     private ArrayList<Book> parseJSONResponse(JSONObject response) {
         ArrayList<Book> listBooks = new ArrayList<>();
@@ -254,11 +347,69 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        //searchBook(search_book.getText().toString(), String.valueOf(spinner1.getSelectedItem()), String.valueOf(spinner2.getSelectedItem()));
+        //String.valueOf(spinner1.getSelectedItem());
         //Log.d("BUTTON!!! ", String.valueOf(v));
-        Log.d("BOOK INFO!!! ", search_book.getText().toString());
+        Log.d("BOOK INFO", search_book.getText().toString());
+        Log.d("SEARCH TYPE", String.valueOf(spinner1.getSelectedItem()));
+        Log.d("CONDITION TYPE", String.valueOf(spinner2.getSelectedItem()));
         URL_BOOK_CONTENTS = search_book.getText().toString();
-        sendJsonRequest();
+        sendJsonRequest(search_book.getText().toString());
     }
+
+//    private void searchBook(final String search_book, final String search_type, final String condition){
+//        String tag_string_req = "req_search_book";
+//        //pDialog.setMessage("Searching School DB ...");
+//        //showDialog();
+//
+//        StringRequest strReq = new StringRequest(Method.POST,
+//                getRequestUrl(search_book), new Response.Listener<String>(){
+//
+//            @Override
+//            public void onResponse(String response) {
+//                Log.d("RESPONSE", response);
+//                Toast.makeText(getActivity(),
+//                        response, Toast.LENGTH_LONG).show();
+//                //hideDialog();
+//
+//                try{
+//                    JSONObject jObj = new JSONObject(response);
+//                    boolean error = jObj.getBoolean("error");
+//
+//                    if(!error){
+//
+//                    }
+//                }
+//                catch(JSONException e){
+//
+//                }
+//            }
+//
+//
+//        }, new Response.ErrorListener() {
+//
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                //Log.e(TAG, "Login Error: " + error.getMessage());
+//                Toast.makeText(getActivity(),
+//                        error.getMessage(), Toast.LENGTH_LONG).show();
+//                hideDialog();
+//            }
+//        }) {
+//
+//            @Override
+//            protected Map<String, String> getParams() {
+//                // Posting parameters to login url
+//                Map<String, String> params = new HashMap<String, String>();
+//                params.put("tag", "buysearch");
+//                params.put("author", search_book);
+//                //params.put("password", password);
+//
+//                return params;
+//            }
+//
+//        };
+//    }
 
     /**
      * This interface must be implemented by activities that contain this
@@ -278,6 +429,31 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
     public static interface ClickListener{
         public void onClick(View view, int position);
         public void onLongClick(View view, int position);
+    }
+
+    private class CustomOnItemSelectedListener implements android.widget.AdapterView.OnItemSelectedListener {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            /*Toast.makeText(parent.getContext(),
+                    "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
+                    Toast.LENGTH_LONG).show();*/
+
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    }
+
+    /*private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }*/
+
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 
 }

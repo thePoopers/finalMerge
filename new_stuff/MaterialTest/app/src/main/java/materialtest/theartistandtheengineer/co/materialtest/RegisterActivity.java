@@ -142,6 +142,7 @@ public class RegisterActivity extends Activity {
 		StringRequest strReq = new StringRequest(Method.POST,
 				AppConfig.URL_REGISTER, new Response.Listener<String>() {
 
+
 			@Override
 			public void onResponse(String response) {
 				Log.d(TAG, "Register Response: " + response.toString());
@@ -156,6 +157,7 @@ public class RegisterActivity extends Activity {
 						String uid = jObj.getString("uid");
 
 						JSONObject user = jObj.getJSONObject("user");
+
 						String name = user.getString("name");
 						String email = user.getString("email");
 						String created_at = user

@@ -20,23 +20,27 @@
     <Spinner
         android:layout_width="171dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="58dp"
+        android:layout_marginTop="65dp"
         android:id="@+id/spinner1"
+        android:entries="@array/search_type"
+        android:prompt="@string/search_type_prompt"
         android:layout_below="@+id/search_book"
         android:layout_gravity="left|top" />
 
     <Spinner
         android:layout_width="171dp"
-        android:layout_height="68dp"
-        android:layout_marginTop="58dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="65dp"
         android:id="@+id/spinner2"
+        android:entries="@array/condition_array_buy"
+        android:prompt="@string/condition_prompt_buy"
         android:layout_below="@+id/search_book"
         android:layout_gravity="right|top" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="95dp"
         android:layout_below="@+id/spinner1"
         android:text="Search"
         android:id="@+id/button_search"/>
@@ -44,7 +48,7 @@
     <!-- TODO: Update blank fragment layout -->
     <android.support.v7.widget.RecyclerView
         android:layout_below="@+id/button_search"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="150dp"
         android:id="@+id/listSearchedBooks"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

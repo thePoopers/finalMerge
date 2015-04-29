@@ -203,6 +203,7 @@ public class FragmentSearch extends Fragment {
 
                     JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
                     String urlThumbnail = imageLinks.getString("thumbnail");
+
                     Book book = new Book();
                     book.setTitle(volumeTitle);
                     book.setAuthors(author);

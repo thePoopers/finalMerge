@@ -20,6 +20,11 @@ public class Book implements Parcelable{
     private String urlThumbnail;
     private String selfLink;
     private String ISBN_13;
+    private String condition;
+    private String price;
+    private String transactionStatus;
+    private String sellerId;
+    private int tid;
 
     public Book(String id,
                 String volumeInfo,
@@ -129,6 +134,8 @@ public class Book implements Parcelable{
         this.selfLink = selfLink;
     }
 
+
+
     @Override
     public String toString(){
         return "Title: "+title+
@@ -163,4 +170,45 @@ public class Book implements Parcelable{
             return new Book[size];
         }
     };
+
+
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setTransactionStatus(String transactionStatus) {
+        this.transactionStatus = transactionStatus;
+    }
+
+    public String getTransactionStatus() {
+        return transactionStatus;
+    }
+
+    public void setSellerId(String sellerId) {
+        this.sellerId = sellerId;
+    }
+
+    public String getSellerId() {
+        return sellerId;
+    }
+
+    public void setTid(int tid) {
+        this.tid = tid;
+    }
+
+    public int getTid() {
+        return tid;
+    }
 }
