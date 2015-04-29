@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import materialtest.theartistandtheengineer.co.materialtest.R;
 import materialtest.theartistandtheengineer.co.materialtest.activities.BuyActivity;
 import materialtest.theartistandtheengineer.co.materialtest.activities.SellActivity;
-import materialtest.theartistandtheengineer.co.materialtest.adapters.AdapterSearch;
+import materialtest.theartistandtheengineer.co.materialtest.adapters.AdapterBuy;
 import materialtest.theartistandtheengineer.co.materialtest.app.AppController;
 import materialtest.theartistandtheengineer.co.materialtest.network.VolleySingleton;
 import materialtest.theartistandtheengineer.co.materialtest.pojo.Book;
@@ -45,7 +45,7 @@ import materialtest.theartistandtheengineer.co.materialtest.pojo.Book;
  * Use the {@link FragmentSell#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentSell extends Fragment implements View.OnClickListener {
+public class FragmentBuy extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -65,27 +65,18 @@ public class FragmentSell extends Fragment implements View.OnClickListener {
     private String mParam1;
     private String mParam2;
 
-
     private ImageLoader imageLoader;
     private RequestQueue requestQueue;
     private VolleySingleton volleySingleton;
     private ArrayList<Book> listBooks = new ArrayList<>();
     private RecyclerView listSearchedBooks;
-    private AdapterSearch adapterSearch;
+    private AdapterBuy adapterBuy;
     private EditText search_book;
     private Button button_search;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentSell.
-     */
     // TODO: Rename and change types and number of parameters
-    public static FragmentSell newInstance(String param1, String param2) {
-        FragmentSell fragment = new FragmentSell();
+    public static FragmentBuy newInstance(String param1, String param2) {
+        FragmentBuy fragment = new FragmentBuy();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -116,7 +107,7 @@ public class FragmentSell extends Fragment implements View.OnClickListener {
                 + AppController.API_KEY_GOOGLE_BOOKS;
     }
 
-    public FragmentSell() {
+    public FragmentBuy() {
         // Required empty public constructor
     }
 
@@ -138,7 +129,7 @@ public class FragmentSell extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_search_buy, container, false);
 
         search_book = (EditText) view.findViewById(R.id.search_book);
         button_search = (Button) view.findViewById(R.id.button_search);
@@ -146,12 +137,12 @@ public class FragmentSell extends Fragment implements View.OnClickListener {
 
         listSearchedBooks = (RecyclerView) view.findViewById(R.id.listSearchedBooks);
         listSearchedBooks.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapterSearch = new AdapterSearch(getActivity());
-        listSearchedBooks.setAdapter(adapterSearch);
+        adapterBuy = new AdapterBuy(getActivity());
+        listSearchedBooks.setAdapter(adapterBuy);
 
         if(savedInstanceState != null){
             listBooks = savedInstanceState.getParcelableArrayList(STATE_BOOKS);
-            adapterSearch.setBookList(listBooks);
+            adapterBuy.setBookList(listBooks);
         }else if(listBooks != null) {
 
         }
@@ -185,7 +176,7 @@ public class FragmentSell extends Fragment implements View.OnClickListener {
                     @Override
                     public void onResponse(JSONObject response) {
                         listBooks = parseJSONResponse(response);
-                        adapterSearch.setBookList(listBooks);
+                        adapterBuy.setBookList(listBooks);
                     }
                 }, new Response.ErrorListener() {
             @Override

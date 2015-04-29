@@ -254,7 +254,7 @@ public class SingleBookActivity extends ActionBarActivity implements View.OnClic
         // TODO Auto-generated method stub
         switch(which){
             case DialogInterface.BUTTON_POSITIVE: // yes
-                postSale(bookTitle, bookAuthor, isbn_13, sell_amount.getText().toString(), String.valueOf(spinner.getSelectedItem()));
+                postSale(bookTitle, bookAuthor, isbn_13, sell_amount.getText().toString(), String.valueOf(spinner.getSelectedItem()), url);
                 Toast.makeText(getApplicationContext(),
                         "Selected Sell",
                         Toast.LENGTH_LONG).show();
@@ -272,7 +272,7 @@ public class SingleBookActivity extends ActionBarActivity implements View.OnClic
         }
     }
 
-    private void postSale(final String bookTitle, final String bookAuthor, final String isbn_13, final String sell_amount, final String condition) {
+    private void postSale(final String bookTitle, final String bookAuthor, final String isbn_13, final String sell_amount, final String condition, final String image_url) {
 
         HashMap<String, String> user = db.getUserDetails();
         final String unique_id = user.get("uid");
@@ -354,6 +354,7 @@ public class SingleBookActivity extends ActionBarActivity implements View.OnClic
                     params.put("bcondition", condition);
                     params.put("author", bookAuthor);
                     params.put("title", bookTitle);
+                    params.put("image_url", image_url);
 
                 }
                 catch(NumberFormatException e){
