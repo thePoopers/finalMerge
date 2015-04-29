@@ -288,7 +288,6 @@ public class SingleBookActivity extends ActionBarActivity implements View.OnClic
                 AppConfig.URL_SELL, new Response.Listener<String>() {
 
 
-
             @Override
             public void onResponse(String response) {
                 Log.d("THE RESPONSE!!!", "Sell Response: " + response.toString());
