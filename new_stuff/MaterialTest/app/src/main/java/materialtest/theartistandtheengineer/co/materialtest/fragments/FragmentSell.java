@@ -176,6 +176,14 @@ public class FragmentSell extends Fragment implements View.OnClickListener {
         return view;
     }
 
+    @Override
+    public void onClick(View v) {
+        //Log.d("BUTTON!!! ", String.valueOf(v));
+        Log.d("BOOK INFO!!! ", search_book.getText().toString());
+        URL_BOOK_CONTENTS = search_book.getText().toString();
+        sendJsonRequest();
+    }
+
     private void sendJsonRequest() {
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
@@ -261,13 +269,7 @@ public class FragmentSell extends Fragment implements View.OnClickListener {
 
     }
 
-    @Override
-    public void onClick(View v) {
-        //Log.d("BUTTON!!! ", String.valueOf(v));
-        Log.d("BOOK INFO!!! ", search_book.getText().toString());
-        URL_BOOK_CONTENTS = search_book.getText().toString();
-        sendJsonRequest();
-    }
+
 
     /**
      * This interface must be implemented by activities that contain this
