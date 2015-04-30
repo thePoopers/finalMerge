@@ -20,47 +20,44 @@ import materialtest.theartistandtheengineer.co.materialtest.network.VolleySingle
 import materialtest.theartistandtheengineer.co.materialtest.pojo.Book;
 
 /**
- * Created by mpcen-desktop on 3/27/15.
+ * Created by joshgenao on 4/29/15.
  */
-public class AdapterBuy extends RecyclerView.Adapter<AdapterBuy.ViewHolderBookSearch> {
+
+
+public class UserBookForSaleAdapter extends RecyclerView.Adapter<UserBookForSaleAdapter.UserHolderBooks> {
 
     private ArrayList<Book> listBooks = new ArrayList<>();
     private LayoutInflater layoutInflater;
     private VolleySingleton volleySingleton;
     private ImageLoader imageLoader;
 
-    public AdapterBuy(Context context) {
+    public UserBookForSaleAdapter(Context context)
+    {
         layoutInflater = LayoutInflater.from(context);
         volleySingleton = VolleySingleton.getInstance();
         imageLoader = volleySingleton.getImageLoader();
     }
 
-    public void setBookList(ArrayList<Book> listBooks){
-        this.listBooks = listBooks;
-        notifyItemRangeChanged(0, listBooks.size());
-    }
 
     @Override
-    public ViewHolderBookSearch onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.custom_book_buy, parent, false);
-        ViewHolderBookSearch viewHolder = new ViewHolderBookSearch(view);
+    public UserHolderBooks onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = layoutInflater.inflate(R.layout.user_forsale_book, parent, false);
+        UserHolderBooks viewHolder = new UserHolderBooks(view);
         return viewHolder;
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(final ViewHolderBookSearch holder, int position) {
+    public void onBindViewHolder(final UserHolderBooks holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         final Book currentBook = listBooks.get(position);
         String urlThumbnail = currentBook.geturlThumbnail();
-        holder.url = urlThumbnail;
         holder.bookTitle.setText(currentBook.getTitle());
         holder.bookAuthor.setText(currentBook.getAuthors());
         holder.isbn_13.setText(currentBook.getISBN_13());
 
-        if(urlThumbnail != null){
-            imageLoader.get(urlThumbnail, new ImageLoader.ImageListener(){
+        if (urlThumbnail != null) {
+            imageLoader.get(urlThumbnail, new ImageLoader.ImageListener() {
                 // if cant load image
                 @Override
                 public void onErrorResponse(VolleyError error) {
@@ -74,29 +71,34 @@ public class AdapterBuy extends RecyclerView.Adapter<AdapterBuy.ViewHolderBookSe
             });
         }
     }
-
     @Override
     public int getItemCount() {
         return listBooks.size();
     }
 
+
     //use implements View.OnCreateContextMenuListener for Context Menu
-    static class ViewHolderBookSearch extends RecyclerView.ViewHolder implements View.OnClickListener {
+    static class UserHolderBooks extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView bookThumbnail;
         private TextView bookTitle;
         private TextView bookAuthor;
         private TextView isbn_13;
-        private String url;
+        private TextView dateAdded;
+        private TextView price;
 
-        public ViewHolderBookSearch(View itemView) {
+        public UserHolderBooks(View itemView) {
             super(itemView);
-            bookThumbnail = (ImageView) itemView.findViewById(R.id.bookThumbnail);
-            bookTitle = (TextView) itemView.findViewById(R.id.bookTitle);
-            bookAuthor = (TextView) itemView.findViewById(R.id.bookAuthor);
-            isbn_13 = (TextView) itemView.findViewById(R.id.isbn_13);
+            bookThumbnail = (ImageView) itemView.findViewById(R.id.book_thumbnail);
+            bookTitle = (TextView) itemView.findViewById(R.id.title_book);
+            bookAuthor = (TextView) itemView.findViewById(R.id.author_book);
+            isbn_13 = (TextView) itemView.findViewById(R.id.isbn);
+            dateAdded = (TextView) itemView.findViewById(R.id.date);
+            price = (TextView) itemView.findViewById(R.id.price);
             itemView.setOnClickListener(this);
             //itemView.setOnCreateContextMenuListener(this);
+
+
         }
 
         @Override
@@ -105,32 +107,20 @@ public class AdapterBuy extends RecyclerView.Adapter<AdapterBuy.ViewHolderBookSe
                     (String)bookTitle.getText(),
                     (String)bookAuthor.getText(),
                     (String)isbn_13.getText(),
-                    url
-            };
+                    (String)dateAdded.getText(),
+                    (String)price.getText()
 
-            //Toast.makeText(v.getContext(), bookDataArray[0]+"\n"+bookDataArray[1]+"\n"+bookDataArray[2]+"\n"+bookDataArray[3], Toast.LENGTH_SHORT).show();
+            };
 
             Context context = itemView.getContext();
             Intent intent = new Intent(context, SingleBookActivity.class);
             intent.putExtra("bookTitle", bookDataArray[0]);
             intent.putExtra("bookAuthor", bookDataArray[1]);
             intent.putExtra("isbn_13", bookDataArray[2]);
-            intent.putExtra("url", bookDataArray[3]);
+            intent.putExtra("dateAdded", bookDataArray[3]);
+            intent.putExtra("price", bookDataArray[3]);
             context.startActivity(intent);
-
         }
-
-
-
-
-        /*
-        @Override
-        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.setHeaderTitle("Select Action");
-            menu.add(0, v.getId(), 0, "Fast Sell");
-            menu.add(0, v.getId(), 0, "More Info");
-        }*/
-
 
     }
 }

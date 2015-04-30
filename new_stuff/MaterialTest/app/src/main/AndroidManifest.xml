@@ -38,8 +38,11 @@
             android:launchMode="singleTop" >
         </activity>
         <activity android:name=".activities.UserProfile"
-            android:label="Profile"
-          />
+            android:label="Profile" >
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".materialtest.ActivityUsingTabLibrary" />
+        </activity>
         <activity
             android:name=".activities.SellActivity"
             android:label="Sell a book"
