@@ -120,7 +120,7 @@ public class ActivityUsingTabLibrary extends ActionBarActivity implements Materi
 
     }
 
-    private void logoutUser() {
+    public void logoutUser() {
         session.setLogin(false);
 
         db.deleteUsers();

@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <permission
         android:name="materialtest.theartistandtheengineer.co.materialtest.permission.C2D_MESSAGE"
@@ -102,7 +103,15 @@
         <activity
             android:name=".MessagingActivity"
             android:label="Chat"
+<<<<<<< HEAD
             android:screenOrientation="portrait" />
+=======
+            android:screenOrientation="portrait">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".materialtest.ActivityUsingTabLibrary"/></activity>
+
+>>>>>>> da2d8a42a32ceb970a57cad1740fe60f714d7182
         <activity
             android:name=".activities.RatingsActivity"
             android:label="@string/title_activity_ratings" >

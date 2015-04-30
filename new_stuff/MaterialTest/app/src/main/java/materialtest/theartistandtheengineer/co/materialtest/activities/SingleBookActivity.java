@@ -26,13 +26,19 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
+import com.parse.FindCallback;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import materialtest.theartistandtheengineer.co.materialtest.MessagingActivity;
 import materialtest.theartistandtheengineer.co.materialtest.R;
 import materialtest.theartistandtheengineer.co.materialtest.app.AppConfig;
 import materialtest.theartistandtheengineer.co.materialtest.app.AppController;
@@ -146,8 +152,8 @@ public class SingleBookActivity extends ActionBarActivity implements View.OnClic
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         button.setOnClickListener(this);
+
     }
 
 
@@ -188,6 +194,35 @@ public class SingleBookActivity extends ActionBarActivity implements View.OnClic
             NavUtils.navigateUpFromSameTask(this);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    //Onclick for buy to open chat
+    public void onClickBuy(View v) {
+        //Open messaging activity with bogus ID's.
+        Log.d("current_user_check", ParseUser.getCurrentUser().getUsername());
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        /**
+         * Replace m_mcgee@knights.ucf.edu with the seller username (ask manny where this is stored and
+         * how to access.
+         */
+        query.whereEqualTo("username", "m_mcgee@knights.ucf.edu");
+        query.findInBackground(new FindCallback<ParseUser>() {
+            public void done(List<ParseUser> user, com.parse.ParseException e) {
+                if (e == null) {
+                    Log.d("Query_finder_test", "User list size"+user.size()+" Username: "+user.get(0)
+                            .getUsername()+" User Id: "+user.get(0).getObjectId());
+                    String recipientId = user.get(0).getObjectId();
+                    Intent intent = new Intent(getApplicationContext(), MessagingActivity.class);
+                    intent.putExtra("RECIPIENT_ID", recipientId);
+                    intent.putExtra("RECIPIENT_USER_NAME", user.get(0).getUsername());
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "Error finding that user",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
