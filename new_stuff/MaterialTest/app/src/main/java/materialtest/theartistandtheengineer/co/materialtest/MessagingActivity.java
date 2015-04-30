@@ -41,6 +41,7 @@ import java.util.List;
 import materialtest.theartistandtheengineer.co.materialtest.activities.RatingsActivity;
 import materialtest.theartistandtheengineer.co.materialtest.helper.MessageAdapter;
 import materialtest.theartistandtheengineer.co.materialtest.helper.MessageService;
+import materialtest.theartistandtheengineer.co.materialtest.materialtest.ActivityUsingTabLibrary;
 
 public class MessagingActivity extends ActionBarActivity {
 
@@ -110,19 +111,17 @@ public class MessagingActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml
 
+        Intent intent = new Intent(getApplicationContext(), RatingsActivity.class);
+        //add seller id to intent. for now use recipient ID.
+        intent.putExtra("RECIPIENT_ID", recipientId);
+        intent.putExtra("RECIPIENT_USER_NAME", recipientUserName);
         switch (item.getItemId()) {
             case R.id.action_complete:
                 //TODO start ratings activity
-                Intent intent = new Intent(getApplicationContext(), RatingsActivity.class);
-                //add seller id to intent. for now use recipient ID.
-                intent.putExtra("RECIPIENT_ID", recipientId);
-                intent.putExtra("RECIPIENT_USER_NAME", recipientUserName);
                 startActivity(intent);
                 break;
             case R.id.action_cancel:
-                //TODO start ratings activity
-                break;
-            case R.id.action_log_out:
+                startActivity(intent);
                 break;
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
@@ -133,6 +132,8 @@ public class MessagingActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     //get previous messages from parse & display
     private void populateMessageHistory() {

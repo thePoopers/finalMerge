@@ -9,12 +9,6 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_log_out"
-        android:orderInCategory="400"
-        android:title="@string/action_log_out"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/action_complete"
         android:orderInCategory="200"
         android:title="@string/menu_option_complete_transaction"
