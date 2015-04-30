@@ -46,7 +46,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 //import materialtest.theartistandtheengineer.co.materialtest.sharedpreferences.*;
 
-public class SingleBookActivity extends ActionBarActivity implements View.OnClickListener,DialogInterface.OnClickListener{
+public class SingleBuyBookActivity extends ActionBarActivity implements View.OnClickListener,DialogInterface.OnClickListener{
 
     private SQLiteHandler db;
     private SessionManager session;
@@ -59,16 +59,19 @@ public class SingleBookActivity extends ActionBarActivity implements View.OnClic
     private TextView tv_bookTitle;
     private TextView tv_bookAuthor;
     private TextView tv_isbn_13;
+    private TextView tv_price;
+    private TextView tv_bcondition;
+    private TextView tv_seller_id;
+
 
     private Spinner spinner;
     private Button button;
-    private EditText sell_amount;
 
     private HashMap<String, String> userData;
 
     private TextView t;
 
-    private String bookTitle, bookAuthor, isbn_13, url;
+    private String bookTitle, bookAuthor, isbn_13, url, price, bcondition, seller_id;
 
 
     private String uid;
@@ -101,51 +104,72 @@ public class SingleBookActivity extends ActionBarActivity implements View.OnClic
         if (savedInstanceState == null) {
             savedInstanceState = getIntent().getExtras();
             if (savedInstanceState == null) {
-                bookTitle = bookAuthor = isbn_13 = url = null;
+                bookTitle = bookAuthor = isbn_13 = url = price = bcondition = seller_id = null;
             } else {
                 bookTitle = (String) savedInstanceState.getSerializable("bookTitle");
                 bookAuthor = (String) savedInstanceState.getSerializable("bookAuthor");
                 isbn_13 = (String) savedInstanceState.getSerializable("isbn_13");
                 url = (String) savedInstanceState.getSerializable("url");
+                price = (String) savedInstanceState.getSerializable("price");
+                bcondition = (String) savedInstanceState.getSerializable("bcondition");
+                seller_id = (String) savedInstanceState.getSerializable("seller_id");
             }
         } else {
             bookTitle = (String) savedInstanceState.getSerializable("bookTitle");
             bookAuthor = (String) savedInstanceState.getSerializable("bookAuthor");
             isbn_13 = (String) savedInstanceState.getSerializable("isbn_13");
             url = (String) savedInstanceState.getSerializable("url");
+            price = (String) savedInstanceState.getSerializable("price");
+            bcondition = (String) savedInstanceState.getSerializable("bcondition");
+            seller_id = (String) savedInstanceState.getSerializable("seller_id");
         }
 
         // Used for debugging
         //Toast.makeText(this, bookTitle.toString() + "\n" + bookAuthor.toString() + "\n" + isbn_13.toString() + "\n" + url.toString(), Toast.LENGTH_LONG).show();
 
-        setContentView(R.layout.activity_single_book);
+        setContentView(R.layout.activity_single_buy_book);
 
         //addListenerOnButton();
-        sell_amount = (EditText) findViewById(R.id.sell_amount);
-        spinner = (Spinner) findViewById(R.id.spinner);
+        //sell_amount = (EditText) findViewById(R.id.sell_amount);
+        //spinner = (Spinner) findViewById(R.id.spinner);
         button = (Button) findViewById(R.id.button);
 
         //addListenerOnSpinnerItemSelection();
 
         //spinner = (Spinner) findViewById(R.id.spinner);
-        spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
-
-        tv_bookTitle = (TextView) findViewById(R.id.bookTitle);
-        tv_bookTitle.setText(bookTitle);
-        tv_bookAuthor = (TextView) findViewById(R.id.bookAuthor);
-        tv_bookAuthor.setText(bookAuthor);
-        tv_isbn_13 = (TextView) findViewById(R.id.isbn_13);
-        tv_isbn_13.setText(isbn_13);
-        mImageView = (ImageView) findViewById(R.id.bookThumbnail);
-        mImageLoader = VolleySingleton.getInstance().getImageLoader();
-        mImageLoader.get(url, ImageLoader.getImageListener(mImageView, R.drawable.ic_book215, R.drawable.ic_book219));
+        //spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        try{
+            tv_bookTitle = (TextView) findViewById(R.id.bookTitle);
+            tv_bookTitle.setText(bookTitle);
+            /*tv_bookAuthor = (TextView) findViewById(R.id.bookAuthor);
+            tv_bookAuthor.setText(bookAuthor);
+            tv_isbn_13 = (TextView) findViewById(R.id.isbn_13);
+            tv_isbn_13.setText(isbn_13);
+            tv_price = (TextView) findViewById(R.id.price);
+            tv_price.setText(price);
+            tv_bcondition = (TextView) findViewById(R.id.bcondition);
+            tv_bcondition.setText(bcondition);
+            tv_seller_id = (TextView) findViewById(R.id.seller_id);
+            tv_seller_id.setText(seller_id);*/
+            //mImageView = (ImageView) findViewById(R.id.bookThumbnail);
+            //mImageLoader = VolleySingleton.getInstance().getImageLoader();
+            //mImageLoader.get(url, ImageLoader.getImageListener(mImageView, R.drawable.ic_book215, R.drawable.ic_book219));
+
+            Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        catch(Exception e){
+            throw e;
+        }
+
+
+
+
 
         button.setOnClickListener(this);
     }
@@ -190,26 +214,20 @@ public class SingleBookActivity extends ActionBarActivity implements View.OnClic
         return super.onOptionsItemSelected(item);
     }
 
+
     @Override
     public void onClick(View v) {
 
-        if (sell_amount.length() > 0){
-            AlertDialog ad = new AlertDialog.Builder(this)
-                    .setMessage("Title: "+bookTitle+"\nAuthor: "+bookAuthor+"\nISBN: "+isbn_13+"\nPrice: $"+sell_amount.getText().toString()+"\nCondition: "+String.valueOf(spinner.getSelectedItem()))
-                    .setIcon(R.drawable.ic_launcher)
-                    .setTitle("Confirm listing")
-                    .setPositiveButton("Post", this)
-                    .setNeutralButton("Cancel", this)
-                    .setCancelable(false)
-                    .create();
+        /*AlertDialog ad = new AlertDialog.Builder(this)
+                .setMessage("Title: "+bookTitle+"\nAuthor: "+bookAuthor+"\nISBN: "+isbn_13+"\nPrice: $"+price+"\nCondition: "+bcondition+"\nSeller: "+seller_id)
+                .setIcon(R.drawable.ic_launcher)
+                .setTitle("Confirm Buy")
+                .setPositiveButton("BUY", this)
+                .setNeutralButton("Cancel", this)
+                .setCancelable(false)
+                .create();
+        ad.show();*/
 
-            ad.show();
-        }
-        else{
-            Toast.makeText(getApplicationContext(),
-                    "You must enter a price",
-                    Toast.LENGTH_LONG).show();
-        }
     }
 
     @Override
@@ -217,9 +235,9 @@ public class SingleBookActivity extends ActionBarActivity implements View.OnClic
         // TODO Auto-generated method stub
         switch(which){
             case DialogInterface.BUTTON_POSITIVE: // yes
-                postSale(bookTitle, bookAuthor, isbn_13, sell_amount.getText().toString(), String.valueOf(spinner.getSelectedItem()), url);
+                //postSale(bookTitle, bookAuthor, isbn_13, sell_amount.getText().toString(), String.valueOf(spinner.getSelectedItem()), url);
                 Toast.makeText(getApplicationContext(),
-                        "Selected Sell",
+                        "Selected Buy",
                         Toast.LENGTH_LONG).show();
                 break;
 
@@ -235,7 +253,7 @@ public class SingleBookActivity extends ActionBarActivity implements View.OnClic
         }
     }
 
-    private void postSale(final String bookTitle, final String bookAuthor, final String isbn_13, final String sell_amount, final String condition, final String image_url) {
+    /*private void postSale(final String bookTitle, final String bookAuthor, final String isbn_13, final String sell_amount, final String condition, final String image_url) {
 
         HashMap<String, String> user = db.getUserDetails();
         final String unique_id = user.get("uid");
@@ -333,7 +351,7 @@ public class SingleBookActivity extends ActionBarActivity implements View.OnClic
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_sell);
 
-    }
+    }*/
 
 
 

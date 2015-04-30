@@ -222,12 +222,11 @@ public class FragmentSell extends Fragment implements View.OnClickListener {
                     // make the volumeInfo JSON Object
                     JSONObject volumeInfo = currentBook.getJSONObject("volumeInfo");
 
-                    // title
+
                     String volumeTitle = volumeInfo.getString("title");
-                    // author
+
                     JSONArray volumeAuthor = volumeInfo.getJSONArray("authors");
                     String author = volumeAuthor.getString(0);
-                    // isbn's
                     JSONArray volumeIndustryIdentifier = volumeInfo.getJSONArray("industryIdentifiers");
                     JSONObject isbn_type1 = volumeIndustryIdentifier.getJSONObject(0);
                     JSONObject isbn_type2 = volumeIndustryIdentifier.getJSONObject(1);
@@ -251,8 +250,6 @@ public class FragmentSell extends Fragment implements View.OnClickListener {
                     book.seturlThumbnail(urlThumbnail);
 
                     listBooks.add(book);
-                    //date stuff at end of video 37
-                    //data.append(id + "\n" + volumeTitle + "\n" + author + "\n" + identifier + "\n");
                 }
                 //L.T(getActivity(), listBooks.toString());
             }
@@ -266,7 +263,6 @@ public class FragmentSell extends Fragment implements View.OnClickListener {
     @Override
     public void onDetach() {
         super.onDetach();
-
     }
 
 

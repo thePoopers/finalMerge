@@ -69,5 +69,6 @@
     <string name="title_activity_ratings">Rate User</string>
     <string name="app_bar_rate_seller">Rate Seller</string>
     <string name="title_activity_user_profile">UserProfile</string>
+    <string name="title_activity_single_buy_book">SingleBuyBookActivity</string>
 
 </resources>

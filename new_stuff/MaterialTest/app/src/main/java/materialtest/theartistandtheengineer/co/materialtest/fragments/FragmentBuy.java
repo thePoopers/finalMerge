@@ -1,5 +1,7 @@
 package materialtest.theartistandtheengineer.co.materialtest.fragments;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,7 +12,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -59,19 +63,9 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    public static final String URL_BOOK = "https://www.googleapis.com/books/v1/volumes";
-
     public static final String URL_UBOOKS = "http://theartistandtheengineer.co/ubooks/";
-
-    public static final String URL_BOOK_SEARCH = "q=";
-    private static String URL_BOOK_CONTENTS = "";
-    public static final String URL_BOOK_START_INDEX = "startIndex=";
-    public static final String URL_BOOK_MAX_RESULTS = "maxResults=";
-    public static final String URL_BOOK_PARAM_API_KEY = "key=";
-    public static final String URL_CHAR_QUESTION = "?";
-    public static final String URL_CHAR_AMPERSAND = "&";
+    private static String SEARCH_BOOK_CONTENTS = "";
     private static final String STATE_BOOKS = "state_books";
-
 
 
     private Spinner spinner1;
@@ -107,108 +101,36 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
         outState.putParcelableArrayList(STATE_BOOKS, listBooks);
     }
 
-    public static String getRequestUrl(int startIndex, int maxResults) {
 
-        return URL_BOOK
-                + URL_CHAR_QUESTION
-                + URL_BOOK_SEARCH
-                + URL_BOOK_CONTENTS
-                + URL_CHAR_AMPERSAND
-                + URL_BOOK_START_INDEX
-                + startIndex
-                + URL_CHAR_AMPERSAND
-                + URL_BOOK_MAX_RESULTS
-                + maxResults
-                + URL_CHAR_AMPERSAND
-                + URL_BOOK_PARAM_API_KEY
-                + AppController.API_KEY_GOOGLE_BOOKS;
-    }
-
-    public static String getRequestUrl(String author) {
-        return URL_UBOOKS + "?author="+author;
-    }
-
-
-
-    public FragmentBuy() {
-        // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    private class CustomOnItemSelectedListener implements android.widget.AdapterView.OnItemSelectedListener {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            Toast.makeText(parent.getContext(),
+                    "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
+                    Toast.LENGTH_LONG).show();
         }
 
-        volleySingleton = VolleySingleton.getInstance();
-        requestQueue = volleySingleton.getRequestQueue();
-        //sendJsonRequest();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_fragment_buy, container, false);
-
-        spinner1 = (Spinner) view.findViewById(R.id.spinner1);
-        spinner2 = (Spinner) view.findViewById(R.id.spinner2);
-
-        spinner1.setOnItemSelectedListener(new CustomOnItemSelectedListener());
-        spinner2.setOnItemSelectedListener(new CustomOnItemSelectedListener());
-
-        search_book = (EditText) view.findViewById(R.id.search_book);
-        button_search = (Button) view.findViewById(R.id.button_search);
-        button_search.setOnClickListener(this);
-
-        listSearchedBooks = (RecyclerView) view.findViewById(R.id.listSearchedBooks);
-        listSearchedBooks.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapterBuy = new AdapterBuy(getActivity());
-        listSearchedBooks.setAdapter(adapterBuy);
-
-        if(savedInstanceState != null){
-            listBooks = savedInstanceState.getParcelableArrayList(STATE_BOOKS);
-            adapterBuy.setBookList(listBooks);
-        }else if(listBooks != null) {
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
 
         }
-        else {
-            //sendJsonRequest();
-        }
-
-
-
-        return view;
     }
 
-    @Override
-    public void onClick(View v) {
-        //searchBook(search_book.getText().toString(), String.valueOf(spinner1.getSelectedItem()), String.valueOf(spinner2.getSelectedItem()));
-        //String.valueOf(spinner1.getSelectedItem());
-        //Log.d("BUTTON!!! ", String.valueOf(v));
-        Log.d("BOOK INFO", search_book.getText().toString());
-        Log.d("SEARCH TYPE", String.valueOf(spinner1.getSelectedItem()));
-        Log.d("CONDITION TYPE", String.valueOf(spinner2.getSelectedItem()));
-        URL_BOOK_CONTENTS = search_book.getText().toString();
-        sendJsonRequest(search_book.getText().toString(), String.valueOf(spinner1.getSelectedItem()), String.valueOf(spinner2.getSelectedItem()));
-    }
 
-    // JOSHJOSHJOSHJOSHJOSHJOSHJOSH
+    public FragmentBuy() {}
+    // POST Json
     private void sendJsonRequest(final String search_string, final String search_type, final String book_condition) {
-        //json array req
+
         String tag_string_buysearch = "req_buysearch";
         StringRequest strReq = new StringRequest(Method.POST,
                 URL_UBOOKS, new Response.Listener<String>() {
 
+            // On responsedata, parse JSON and populate the view (adapterbuy)
             @Override
             public void onResponse(String response) {
                 Log.d("BUY SEARCH", "BUY SEARCH Response: " + response);
 
                 try {
-
                     JSONObject info = new JSONObject(response);
                     Log.d("DEBUG", "INSIDE TRY");
                     boolean error_check = info.getBoolean("error");
@@ -216,8 +138,9 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
                     if (!error_check) {
                         listBooks = parseJSONResponse(info);
                         Toast.makeText(getActivity(), "ERRORCHECK NULL TOAST "+response.toString(), Toast.LENGTH_LONG).show();
-                        adapterBuy.setBookList(listBooks);
 
+                        // Populate the adapter
+                        adapterBuy.setBookList(listBooks);
                     }
                     else {
                         String errorMsg = "No books found.";
@@ -242,7 +165,7 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
             }
         }) {
 
-            //JOSHJOSHJOSHJOSHJOSHJOSHJOSHJOSH
+            // Build the JSON to send to server
             @Override
             protected Map<String, String> getParams() {
                 // Posting params to register url
@@ -251,18 +174,17 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
                 params.put("search_type", search_type);
                 params.put("string_query", search_string);
                 params.put("bcondition", book_condition);
-                //params.put("bcondition", bcondition);
 
                 return params;
             }
-
         };
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_buysearch);
     }
 
-    //JOSHJOSHJOSHJOSHJOSHJOSHJOSHJOSH
+
+    // Parse json response and return list of books
     private ArrayList<Book> parseJSONResponse(JSONObject response) {
         ArrayList<Book> listBooks = new ArrayList<>();
 
@@ -276,6 +198,7 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
 
                     JSONObject current = data.getJSONObject(i);
 
+                    // Deserialize JSON response from server
                     String author = current.getString("author");
                     String title = current.getString("title");
                     String image_url = current.getString("image_url");
@@ -287,6 +210,7 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
                     String tid = current.getString("tid");
                     int tid_int = Integer.parseInt(tid);
 
+                    // Build book object for storage
                     Book book = new Book();
                     book.setAuthors(author);
                     book.setImageLinks(image_url);
@@ -308,30 +232,73 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         return listBooks;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+
+
+        volleySingleton = VolleySingleton.getInstance();
+        requestQueue = volleySingleton.getRequestQueue();
+        //sendJsonRequest();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_fragment_buy, container, false);
+
+        spinner1 = (Spinner) view.findViewById(R.id.spinner1);
+        spinner2 = (Spinner) view.findViewById(R.id.spinner2);
+        spinner1.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+        spinner2.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+
+        search_book = (EditText) view.findViewById(R.id.search_book);
+        button_search = (Button) view.findViewById(R.id.button_search);
+        button_search.setOnClickListener(this);
+
+
+
+        listSearchedBooks = (RecyclerView) view.findViewById(R.id.listSearchedBooks);
+        listSearchedBooks.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapterBuy = new AdapterBuy(getActivity());
+        listSearchedBooks.setAdapter(adapterBuy);
+        listSearchedBooks.setOnClickListener(this);
+
+        // If savedInstanceState, reload the data into list in view
+        if(savedInstanceState != null){
+            listBooks = savedInstanceState.getParcelableArrayList(STATE_BOOKS);
+            adapterBuy.setBookList(listBooks);
+        }
+
+        return view;
+    }
+
+    // OnClick send JSON request to server
+    @Override
+    public void onClick(View v) {
+        Log.d("BOOK INFO", search_book.getText().toString());
+        Log.d("AUTHOR INFO", spinner1.getSelectedItem().toString());
+        Log.d("COND INFO", spinner2.getSelectedItem().toString());
+        SEARCH_BOOK_CONTENTS = search_book.getText().toString();
+        sendJsonRequest(search_book.getText().toString(), String.valueOf(spinner1.getSelectedItem()), String.valueOf(spinner2.getSelectedItem()));
+
+    }
 
     @Override
     public void onDetach() {
         super.onDetach();
-
     }
 
-    private class CustomOnItemSelectedListener implements android.widget.AdapterView.OnItemSelectedListener {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            Toast.makeText(parent.getContext(),
-                    "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
-                    Toast.LENGTH_LONG).show();
-
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-    }
 
     private void showDialog() {
         if (!pDialog.isShowing())

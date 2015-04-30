@@ -37,11 +37,12 @@
             android:label="Home"
             android:launchMode="singleTop" >
         </activity>
-        <activity android:name=".activities.UserProfile"
+        <activity
+            android:name=".activities.UserProfile"
             android:label="Profile" >
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".materialtest.ActivityUsingTabLibrary" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".materialtest.ActivityUsingTabLibrary" />
         </activity>
         <activity
             android:name=".activities.SellActivity"
@@ -88,13 +89,20 @@
                 android:value="materialtest.theartistandtheengineer.co.materialtest.activities.SellActivity" />
         </activity>
 
+        <activity
+            android:name=".activities.SingleBuyBookActivity"
+            android:label="Sell a book" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="materialtest.theartistandtheengineer.co.materialtest.activities.BuyActivity" />
+        </activity>
+
         <service android:name=".helper.MessageService" />
 
         <activity
             android:name=".MessagingActivity"
             android:label="Chat"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".activities.RatingsActivity"
             android:label="@string/title_activity_ratings" >
@@ -115,11 +123,10 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-                <!--                   IMPORTANT: Change "com.parse.tutorials.pushnotifications" to match your app's package name. -->
+                <!-- IMPORTANT: Change "com.parse.tutorials.pushnotifications" to match your app's package name. -->
                 <category android:name="materialtest.theartistandtheengineer.co.materialtest" />
             </intent-filter>
         </receiver>
-
 
     </application>
 

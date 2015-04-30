@@ -1,33 +1,40 @@
 package materialtest.theartistandtheengineer.co.materialtest.adapters;
-
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.StringRequest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import materialtest.theartistandtheengineer.co.materialtest.R;
 import materialtest.theartistandtheengineer.co.materialtest.activities.SingleBookActivity;
+import materialtest.theartistandtheengineer.co.materialtest.activities.SingleBuyBookActivity;
 import materialtest.theartistandtheengineer.co.materialtest.network.VolleySingleton;
 import materialtest.theartistandtheengineer.co.materialtest.pojo.Book;
 
-/**
- * Created by mpcen-desktop on 3/27/15.
- */
-public class AdapterBuy extends RecyclerView.Adapter<AdapterBuy.ViewHolderBookSearch> {
 
+public class AdapterBuy extends RecyclerView.Adapter<AdapterBuy.ViewHolderBookSearch> {
+    public static final String URL_UBOOKS = "http://theartistandtheengineer.co/ubooks/";
     private ArrayList<Book> listBooks = new ArrayList<>();
     private LayoutInflater layoutInflater;
     private VolleySingleton volleySingleton;
     private ImageLoader imageLoader;
+
 
     public AdapterBuy(Context context) {
         layoutInflater = LayoutInflater.from(context);
@@ -56,12 +63,12 @@ public class AdapterBuy extends RecyclerView.Adapter<AdapterBuy.ViewHolderBookSe
         String urlThumbnail = currentBook.geturlThumbnail();
         holder.url = urlThumbnail;
         holder.bookTitle.setText(currentBook.getTitle());
-        holder.bookAuthor.setText(currentBook.getAuthors());
-        holder.isbn_13.setText(currentBook.getISBN_13());
-        holder.price.setText(currentBook.getPrice());
-        holder.bcondition.setText(currentBook.getBcondition());
-        holder.seller_id.setText(currentBook.getSellerId());
-        holder.reputation_avg.setText(currentBook.getReputationAvg());
+//        holder.bookAuthor.setText(currentBook.getAuthors());
+//        holder.isbn_13.setText("ISBN: "+currentBook.getISBN_13());
+//        holder.price.setText("Price: $"+currentBook.getPrice());
+//        holder.bcondition.setText("Condition: "+currentBook.getBcondition());
+//        holder.seller_id.setText("Seller ID: "+currentBook.getSellerId());
+        //holder.reputation_avg.setText(currentBook.getReputationAvg());
         //holder.reputation_avg.setText(currentBook.getReputationAvg());
 
 
@@ -97,64 +104,58 @@ public class AdapterBuy extends RecyclerView.Adapter<AdapterBuy.ViewHolderBookSe
         private String url;
         private TextView bcondition;
         private TextView transaction_status;
-        private TextView reputation_avg;
+        //private TextView reputation_avg;
         private TextView seller_id;
         private TextView price;
         private TextView tid;
 
         public ViewHolderBookSearch(View itemView) {
             super(itemView);
-            bookThumbnail = (ImageView) itemView.findViewById(R.id.bookThumbnail);
+            //bookThumbnail = (ImageView) itemView.findViewById(R.id.bookThumbnail);
             bookTitle = (TextView) itemView.findViewById(R.id.bookTitle);
-            bookAuthor = (TextView) itemView.findViewById(R.id.bookAuthor);
+            /*bookAuthor = (TextView) itemView.findViewById(R.id.bookAuthor);
             isbn_13 = (TextView) itemView.findViewById(R.id.isbn_13);
             price = (TextView) itemView.findViewById(R.id.price);
             bcondition = (TextView) itemView.findViewById(R.id.bcondition);
-            seller_id = (TextView) itemView.findViewById(R.id.seller_id);
-            reputation_avg = (TextView) itemView.findViewById(R.id.reputation_avg);
+            seller_id = (TextView) itemView.findViewById(R.id.seller_id);*/
+            //reputation_avg = (TextView) itemView.findViewById(R.id.reputation_avg);
             itemView.setOnClickListener(this);
             //itemView.setOnCreateContextMenuListener(this);
         }
 
         @Override
         public void onClick(View v) {
+//            AlertDialog.Builder ad = new AlertDialog.Builder(v.getContext());
+//            ad.setTitle("Commit to buy?");
+//            ad.setMessage("setmessage");
+//            ad.setIcon(R.drawable.ic_launcher);
+//            ad.setPositiveButton("BUY", null);
+//            ad.setNeutralButton("Cancel", null);
+//            ad.setCancelable(false);
+//            ad.create();
+//            ad.show();
+
             String[] bookDataArray = {
-                    (String)bookTitle.getText(),
-                    (String)bookAuthor.getText(),
-                    (String)isbn_13.getText(),
-                    (String)price.getText(),
-                    (String)bcondition.getText(),
-                    (String)seller_id.getText(),
-                    (String) reputation_avg.getText(),
-                    //(String)reputation_avg.getText(),
-                    //seller_rating.getText();
-                    url
+                    (String) bookTitle.getText()
+//                    (String) bookAuthor.getText(),
+//                    (String) isbn_13.getText(),
+//                    (String) price.getText(),
+//                    (String) bcondition.getText(),
+//                    (String) seller_id.getText(),
+//                    url
             };
 
-            //Toast.makeText(v.getContext(), bookDataArray[0]+"\n"+bookDataArray[1]+"\n"+bookDataArray[2]+"\n"+bookDataArray[3], Toast.LENGTH_SHORT).show();
-
             Context context = itemView.getContext();
-            Intent intent = new Intent(context, SingleBookActivity.class);
-            intent.putExtra("bookTitle", bookDataArray[0]);
-            intent.putExtra("bookAuthor", bookDataArray[1]);
-            intent.putExtra("isbn_13", bookDataArray[2]);
-            intent.putExtra("url", bookDataArray[3]);
-            //intent.putExtra("bcondition", bookDataArray[4]);
+            Intent intent = new Intent(context, SingleBuyBookActivity.class);
+//            intent.putExtra("bookTitle", bookDataArray[0]);
+//            intent.putExtra("bookAuthor", bookDataArray[1]);
+//            intent.putExtra("isbn_13", bookDataArray[2]);
+//            intent.putExtra("url", bookDataArray[3]);
+//            intent.putExtra("price", bookDataArray[4]);
+//            intent.putExtra("bcondition", bookDataArray[5]);
+//            intent.putExtra("seller_id", bookDataArray[6]);*/
             context.startActivity(intent);
-
         }
-
-
-
-
-        /*
-        @Override
-        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.setHeaderTitle("Select Action");
-            menu.add(0, v.getId(), 0, "Fast Sell");
-            menu.add(0, v.getId(), 0, "More Info");
-        }*/
-
-
     }
+
 }
