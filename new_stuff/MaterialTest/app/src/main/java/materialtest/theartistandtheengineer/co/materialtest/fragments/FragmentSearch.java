@@ -149,6 +149,7 @@ public class FragmentSearch extends Fragment {
                 getRequestUrl(0, 20),
                 (String) null,
                 new Response.Listener<JSONObject>() {
+
                     @Override
                     public void onResponse(JSONObject response) {
                         listBooks = parseJSONResponse(response);

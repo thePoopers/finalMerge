@@ -13,18 +13,25 @@ public class Book implements Parcelable{
     private String volumeInfo;
     private String title;
     private String authors;
+    private String author;
     private String industryIdentifiers;
     private String type;
     private String identifier;
+    private String bcondition;
+    private String transaction_status;
     private String imageLinks;
     private String urlThumbnail;
     private String selfLink;
     private String ISBN_13;
+    private String isbn;
     private String condition;
+    private String image_url;
+    private String seller_id;
     private String price;
     private String transactionStatus;
     private String sellerId;
     private int tid;
+    private int tid_int;
 
     public Book(String id,
                 String volumeInfo,
@@ -49,6 +56,43 @@ public class Book implements Parcelable{
         this.urlThumbnail = urlThumbnail;
         this.selfLink = selfLink;
         this.ISBN_13 = ISBN_13;
+    }
+
+    /*
+    book.setAuthors(author);
+                            book.setImageLinks(image_url);
+                            book.setTitle(title);
+                            book.setCondition(bcondition);
+                            book.setISBN_13(isbn);
+                            book.setPrice(price);
+                            book.setTransactionStatus(transaction_status);
+                            book.seturlThumbnail(image_url);
+                            book.setSellerId(seller_id);
+                            book.setTid(tid_int);
+
+     */
+
+    public Book(
+                String author,
+                String title,
+                String bcondition,
+                String isbn,
+                String price,
+                String transaction_status,
+                String image_url,
+                String seller_id,
+                int tid_int){
+
+        this.author = author;
+        this.title = title;
+        this.bcondition = bcondition;
+        this.isbn = isbn;
+        this.price = price;
+        this.transaction_status = transaction_status;
+        this.image_url = image_url;
+        this.seller_id = seller_id;
+        this.tid_int = tid_int;
+
     }
 
     public Book() {
@@ -211,4 +255,6 @@ public class Book implements Parcelable{
     public int getTid() {
         return tid;
     }
+
+
 }

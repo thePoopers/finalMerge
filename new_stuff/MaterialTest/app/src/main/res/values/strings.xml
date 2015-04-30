@@ -57,7 +57,7 @@
 
     <string name="condition_prompt_buy">Book Condition</string>
     <string-array name="condition_array_buy">
-        <item>All</item>
+        <item>Any</item>
         <item>New</item>
         <item>Like New</item>
         <item>Good</item>
