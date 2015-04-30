@@ -24,6 +24,7 @@ import it.neokree.materialtabs.MaterialTab;
 import it.neokree.materialtabs.MaterialTabHost;
 import it.neokree.materialtabs.MaterialTabListener;
 import materialtest.theartistandtheengineer.co.materialtest.LoginActivity;
+import materialtest.theartistandtheengineer.co.materialtest.activities.UserProfile;
 import materialtest.theartistandtheengineer.co.materialtest.fragments.FragmentBooks;
 import materialtest.theartistandtheengineer.co.materialtest.fragments.FragmentNotifications;
 import materialtest.theartistandtheengineer.co.materialtest.fragments.NavigationDrawerFragment;
@@ -170,6 +171,28 @@ public class ActivityUsingTabLibrary extends ActionBarActivity implements Materi
     @Override
     public void onTabUnselected(MaterialTab materialTab) {
 
+    }
+
+
+    public void onDrawerItemClicked(int index)
+    {
+
+        switch(index) {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                startActivity(new Intent(this, UserProfile.class));
+                break;
+
+        }
     }
 
     //ViewPagerAdapter for text-based tabs

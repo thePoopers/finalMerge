@@ -68,5 +68,6 @@
     <string name="title_activity_confirm_sell">ConfirmSellActivity</string>
     <string name="title_activity_ratings">Rate User</string>
     <string name="app_bar_rate_seller">Rate Seller</string>
+    <string name="title_activity_user_profile">UserProfile</string>
 
 </resources>
