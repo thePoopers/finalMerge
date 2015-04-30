@@ -9,11 +9,14 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.parse.ParseUser;
 
 import java.util.HashMap;
 
@@ -21,10 +24,12 @@ import it.neokree.materialtabs.MaterialTab;
 import it.neokree.materialtabs.MaterialTabHost;
 import it.neokree.materialtabs.MaterialTabListener;
 import materialtest.theartistandtheengineer.co.materialtest.LoginActivity;
+import materialtest.theartistandtheengineer.co.materialtest.activities.UserProfile;
 import materialtest.theartistandtheengineer.co.materialtest.fragments.FragmentBooks;
 import materialtest.theartistandtheengineer.co.materialtest.fragments.FragmentNotifications;
 import materialtest.theartistandtheengineer.co.materialtest.fragments.NavigationDrawerFragment;
 import materialtest.theartistandtheengineer.co.materialtest.R;
+import materialtest.theartistandtheengineer.co.materialtest.helper.MessageService;
 import materialtest.theartistandtheengineer.co.materialtest.helper.SQLiteHandler;
 import materialtest.theartistandtheengineer.co.materialtest.helper.SessionManager;
 
@@ -120,6 +125,11 @@ public class ActivityUsingTabLibrary extends ActionBarActivity implements Materi
 
         db.deleteUsers();
 
+        //messaging Logout pare user here.
+        Log.d(ActivityUsingTabLibrary.class.toString(), "Logging out of messaging");
+        stopService(new Intent(getApplicationContext(), MessageService.class));
+        ParseUser.logOut();
+
         // Launching the login activity
         Intent intent = new Intent(ActivityUsingTabLibrary.this, LoginActivity.class);
         startActivity(intent);
@@ -161,6 +171,28 @@ public class ActivityUsingTabLibrary extends ActionBarActivity implements Materi
     @Override
     public void onTabUnselected(MaterialTab materialTab) {
 
+    }
+
+
+    public void onDrawerItemClicked(int index)
+    {
+
+        switch(index) {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                startActivity(new Intent(this, UserProfile.class));
+                break;
+
+        }
     }
 
     //ViewPagerAdapter for text-based tabs

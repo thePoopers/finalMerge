@@ -23,6 +23,7 @@
     <color name="btn_login_bg">#eceef1</color>
     <color name="lbl_name">#333333</color>
     <color name="btn_logut_bg">#ffc904</color>
+    <color name="menuColor">#F5F5F5</color>
 
     <color name="ucf_yellow">#EDE107</color>
     <color name="ucf_black">#020000</color>

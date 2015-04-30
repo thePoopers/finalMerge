@@ -37,6 +37,9 @@
             android:label="Home"
             android:launchMode="singleTop" >
         </activity>
+        <activity android:name=".activities.UserProfile"
+            android:label="Profile"
+          />
         <activity
             android:name=".activities.SellActivity"
             android:label="Sell a book"
