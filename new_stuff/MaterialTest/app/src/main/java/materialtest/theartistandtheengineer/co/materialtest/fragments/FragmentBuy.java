@@ -150,7 +150,7 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fragment_buy, container, false);
 
@@ -178,19 +178,7 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
         else {
             //sendJsonRequest();
         }
-        /*
-        listSearchedBooks.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), listSearchedBooks, new ClickListener() {
-            // Here you can start a new activity or adding to the list of selected list that you want
-            @Override
-            public void onClick(View view, int position) {
-                //startActivity(new Intent(getActivity(), SingleBookActivity.class));
-                Toast.makeText(getActivity(), "onClick " + position, Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onLongClick(View view, int position) {
-                Toast.makeText(getActivity(), "onLongClick " + position, Toast.LENGTH_SHORT).show();
-            }
-        }));*/
+
 
 
         return view;
@@ -208,6 +196,7 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
         sendJsonRequest(search_book.getText().toString(), String.valueOf(spinner1.getSelectedItem()), String.valueOf(spinner2.getSelectedItem()));
     }
 
+    // JOSHJOSHJOSHJOSHJOSHJOSHJOSH
     private void sendJsonRequest(final String search_string, final String search_type, final String book_condition) {
         //json array req
         String tag_string_buysearch = "req_buysearch";
@@ -218,23 +207,16 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
             public void onResponse(String response) {
                 Log.d("BUY SEARCH", "BUY SEARCH Response: " + response);
 
-
-
                 try {
 
                     JSONObject info = new JSONObject(response);
-
                     Log.d("DEBUG", "INSIDE TRY");
-
                     boolean error_check = info.getBoolean("error");
 
                     if (!error_check) {
                         listBooks = parseJSONResponse(info);
-
                         Toast.makeText(getActivity(), "ERRORCHECK NULL TOAST "+response.toString(), Toast.LENGTH_LONG).show();
-
                         adapterBuy.setBookList(listBooks);
-
 
                     }
                     else {
@@ -260,6 +242,7 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
             }
         }) {
 
+            //JOSHJOSHJOSHJOSHJOSHJOSHJOSHJOSH
             @Override
             protected Map<String, String> getParams() {
                 // Posting params to register url
@@ -279,6 +262,7 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
         AppController.getInstance().addToRequestQueue(strReq, tag_string_buysearch);
     }
 
+    //JOSHJOSHJOSHJOSHJOSHJOSHJOSHJOSH
     private ArrayList<Book> parseJSONResponse(JSONObject response) {
         ArrayList<Book> listBooks = new ArrayList<>();
 
@@ -286,16 +270,11 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
             //StringBuilder data = new StringBuilder();
             // If there are results
             if (response.length() > 0) {
-                // store all of the results in an JSON array
-                //JSONArray arrayBooks = response.getJSONArray("data");
-                // loop through each of the results(array)
+
                 JSONArray data = response.getJSONArray("data");
                 for (int i = 0; i < data.length(); i++) {
 
                     JSONObject current = data.getJSONObject(i);
-                    //String id = current.getString("id");
-                    // make the volumeInfo JSON Object
-                    //JSONObject volumeInfo = current.getJSONObject("volumeInfo");
 
                     String author = current.getString("author");
                     String title = current.getString("title");
@@ -308,12 +287,11 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
                     String tid = current.getString("tid");
                     int tid_int = Integer.parseInt(tid);
 
-
                     Book book = new Book();
                     book.setAuthors(author);
                     book.setImageLinks(image_url);
                     book.setTitle(title);
-                    book.setCondition(bcondition);
+                    book.setBcondition(bcondition);
                     book.setISBN_13(isbn);
                     book.setPrice(price);
                     book.setTransactionStatus(transaction_status);
@@ -325,7 +303,7 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
                     //date stuff at end of video 37
                     //data.append(id + "\n" + volumeTitle + "\n" + author + "\n" + identifier + "\n");
                 }
-                //L.T(getActivity(), listBooks.toString());
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -340,25 +318,12 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
 
     }
 
-
-
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
-
-    public static interface ClickListener{
-        public void onClick(View view, int position);
-        public void onLongClick(View view, int position);
-    }
-
     private class CustomOnItemSelectedListener implements android.widget.AdapterView.OnItemSelectedListener {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            /*Toast.makeText(parent.getContext(),
+            Toast.makeText(parent.getContext(),
                     "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
-                    Toast.LENGTH_LONG).show();*/
+                    Toast.LENGTH_LONG).show();
 
         }
 
@@ -368,10 +333,10 @@ public class FragmentBuy extends Fragment implements View.OnClickListener {
         }
     }
 
-    /*private void showDialog() {
+    private void showDialog() {
         if (!pDialog.isShowing())
             pDialog.show();
-    }*/
+    }
 
     private void hideDialog() {
         if (pDialog.isShowing())

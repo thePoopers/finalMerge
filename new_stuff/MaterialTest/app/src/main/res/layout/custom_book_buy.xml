@@ -85,7 +85,7 @@
                 android:gravity="left"
                 android:layout_marginLeft="80dp"
                 android:textSize="11dp"
-                android:id="@+id/sell_amount"
+                android:id="@+id/price"
                 android:text="Asking Price: $49.99"
                 android:layout_alignParentRight="true" />
 
@@ -93,14 +93,14 @@
                 android:layout_width="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/sell_amount"
+                android:layout_below="@+id/price"
                 android:textColor="@color/colorSecondaryText"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
                 android:gravity="left"
                 android:layout_marginLeft="80dp"
                 android:textSize="11dp"
-                android:id="@+id/condition"
+                android:id="@+id/bcondition"
                 android:text="Book Condition: New"
                 android:layout_alignParentRight="true" />
 
@@ -108,7 +108,7 @@
                 android:layout_width="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/condition"
+                android:layout_below="@+id/bcondition"
                 android:textColor="@color/colorSecondaryText"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -130,7 +130,7 @@
                 android:gravity="left"
                 android:layout_marginLeft="80dp"
                 android:textSize="11dp"
-                android:id="@+id/seller_rating"
+                android:id="@+id/reputation_avg"
                 android:text="Seller Rating: * * * * *"
                 android:layout_alignParentRight="true" />
 

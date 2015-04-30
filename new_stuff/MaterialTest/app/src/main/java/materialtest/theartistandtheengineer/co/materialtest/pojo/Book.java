@@ -24,9 +24,10 @@ public class Book implements Parcelable{
     private String selfLink;
     private String ISBN_13;
     private String isbn;
-    private String condition;
+    //private String condition;
     private String image_url;
     private String seller_id;
+    private String repututation_avg;
     private String price;
     private String transactionStatus;
     private String sellerId;
@@ -81,16 +82,18 @@ public class Book implements Parcelable{
                 String transaction_status,
                 String image_url,
                 String seller_id,
+                String repututation_avg,
                 int tid_int){
 
         this.author = author;
         this.title = title;
-        this.bcondition = bcondition;
+        //this.condition = condition;
         this.isbn = isbn;
         this.price = price;
         this.transaction_status = transaction_status;
         this.image_url = image_url;
         this.seller_id = seller_id;
+        this.repututation_avg = repututation_avg;
         this.tid_int = tid_int;
 
     }
@@ -216,12 +219,20 @@ public class Book implements Parcelable{
     };
 
 
-    public void setCondition(String condition) {
-        this.condition = condition;
+    public void setBcondition(String bcondition) {
+        this.bcondition = bcondition;
     }
 
-    public String getCondition() {
-        return condition;
+    public String getBcondition() {
+        return bcondition;
+    }
+
+    public void setRepututation_avg(String repututation_avg) {
+        this.repututation_avg = repututation_avg;
+    }
+
+    public String getReputationAvg() {
+        return repututation_avg;
     }
 
     public void setPrice(String price) {

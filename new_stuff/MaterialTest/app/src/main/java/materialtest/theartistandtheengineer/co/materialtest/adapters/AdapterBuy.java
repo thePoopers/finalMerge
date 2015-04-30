@@ -58,6 +58,13 @@ public class AdapterBuy extends RecyclerView.Adapter<AdapterBuy.ViewHolderBookSe
         holder.bookTitle.setText(currentBook.getTitle());
         holder.bookAuthor.setText(currentBook.getAuthors());
         holder.isbn_13.setText(currentBook.getISBN_13());
+        holder.price.setText(currentBook.getPrice());
+        holder.bcondition.setText(currentBook.getBcondition());
+        holder.seller_id.setText(currentBook.getSellerId());
+        holder.reputation_avg.setText(currentBook.getReputationAvg());
+        //holder.reputation_avg.setText(currentBook.getReputationAvg());
+
+
 
         if(urlThumbnail != null){
             imageLoader.get(urlThumbnail, new ImageLoader.ImageListener(){
@@ -88,6 +95,12 @@ public class AdapterBuy extends RecyclerView.Adapter<AdapterBuy.ViewHolderBookSe
         private TextView bookAuthor;
         private TextView isbn_13;
         private String url;
+        private TextView bcondition;
+        private TextView transaction_status;
+        private TextView reputation_avg;
+        private TextView seller_id;
+        private TextView price;
+        private TextView tid;
 
         public ViewHolderBookSearch(View itemView) {
             super(itemView);
@@ -95,6 +108,10 @@ public class AdapterBuy extends RecyclerView.Adapter<AdapterBuy.ViewHolderBookSe
             bookTitle = (TextView) itemView.findViewById(R.id.bookTitle);
             bookAuthor = (TextView) itemView.findViewById(R.id.bookAuthor);
             isbn_13 = (TextView) itemView.findViewById(R.id.isbn_13);
+            price = (TextView) itemView.findViewById(R.id.price);
+            bcondition = (TextView) itemView.findViewById(R.id.bcondition);
+            seller_id = (TextView) itemView.findViewById(R.id.seller_id);
+            reputation_avg = (TextView) itemView.findViewById(R.id.reputation_avg);
             itemView.setOnClickListener(this);
             //itemView.setOnCreateContextMenuListener(this);
         }
@@ -105,6 +122,12 @@ public class AdapterBuy extends RecyclerView.Adapter<AdapterBuy.ViewHolderBookSe
                     (String)bookTitle.getText(),
                     (String)bookAuthor.getText(),
                     (String)isbn_13.getText(),
+                    (String)price.getText(),
+                    (String)bcondition.getText(),
+                    (String)seller_id.getText(),
+                    (String) reputation_avg.getText(),
+                    //(String)reputation_avg.getText(),
+                    //seller_rating.getText();
                     url
             };
 
@@ -116,6 +139,7 @@ public class AdapterBuy extends RecyclerView.Adapter<AdapterBuy.ViewHolderBookSe
             intent.putExtra("bookAuthor", bookDataArray[1]);
             intent.putExtra("isbn_13", bookDataArray[2]);
             intent.putExtra("url", bookDataArray[3]);
+            //intent.putExtra("bcondition", bookDataArray[4]);
             context.startActivity(intent);
 
         }
